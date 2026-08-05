@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Workstation Dashboard - ShareMarket Pro Predictor{% endblock %}
+
+{% block content %}
+<div id="dashboardPage" class="space-y-6">
+    <!-- Header Controls & Ticker Search -->
+    <div class="section-card flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <i class="fas fa-chart-line text-indigo-600 dark:text-indigo-400"></i> Market Intelligence Workstation
+            </h1>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Real-time quote streaming, technical indicators, and AI prediction analysis.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="currencyToggle" class="btn btn-secondary text-xs">
+                <i class="fas fa-rupee-sign text-emerald-600 dark:text-emerald-400"></i> Show in INR
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Input & Quick Chips Bar -->
+    <div class="section-card space-y-3">
+        <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+                <i class="fas fa-search absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input id="symbolInput" class="input-field w-full pl-10 uppercase tracking-wider font-mono font-semibold"
+                    placeholder="Enter Stock Symbol (e.g. AAPL, NVDA, RELIANCE.NS, TCS.NS, NIFTY50)" value="AAPL">
+            </div>
+            <button id="searchBtn" class="btn btn-primary px-7">
+                <i class="fas fa-microchip"></i> Analyze Symbol
+            </button>
+        </div>
+
+        <!-- Stock Symbol Suggestion Chips -->
+        <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+            <span class="text-slate-600 dark:text-slate-400 font-medium mr-1">Trending:</span>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="AAPL">AAPL</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="MSFT">MSFT</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="NVDA">NVDA</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="TSLA">TSLA</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="GOOGL">GOOGL</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="RELIANCE.NS">RELIANCE.NS</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="TCS.NS">TCS.NS</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="SBIN.NS">SBIN.NS</button>
+            <button class="symbol-chip quick-symbol-btn" data-symbol="NIFTY50">NIFTY50</button>
+        </div>
+    </div>
+
+    <!-- Loader indicator -->
+    <section id="dashboardLoader" class="section-card hidden">
+        <div class="flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
+            <span class="loader"></span>
+            <span class="font-medium text-sm">Fetching real-time market quotes and historical data...</span>
+        </div>
+    </section>
+
+    <!-- Key Statistics Cards -->
+    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="statsCards"></section>
+
+    <!-- Main Charts & AI Prediction Workstation -->
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <!-- Price & Volume Chart Panel (2 Cols) -->
+        <div class="section-card xl:col-span-2 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200 dark:border-slate-800/80 pb-3">
+                <div>
+                    <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                        <i class="fas fa-chart-area text-indigo-600 dark:text-indigo-400"></i> Price & Volume Analytics
+                    </h2>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Historical trend charts with technical indicators</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Timeframe:</span>
+                    <select id="periodSelect" class="input-field py-1.5 px-3 text-xs w-32 font-medium">
+                        <option value="1mo">1 Month</option>
+                        <option value="3mo" selected>3 Months</option>
+                        <option value="6mo">6 Months</option>
+                        <option value="1y">1 Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Price Trend Line Chart Canvas -->
+            <div class="relative w-full h-[320px]">
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <!-- Volume Bar Chart Canvas -->
+            <div class="relative w-full h-[120px] pt-4 border-t border-slate-200 dark:border-slate-800/80">
+                <p class="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">Trading Volume</p>
+                <canvas id="volumeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- AI Prediction Panel (1 Col) -->
+        <div class="section-card space-y-5 flex flex-col justify-between border-indigo-500/30">
+            <div>
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800/80 pb-3 mb-4">
+                    <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                        <i class="fas fa-robot text-indigo-600 dark:text-indigo-400"></i> AI Direction Forecast
+                    </h2>
+                    <span class="text-[11px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20 font-mono">XGBoost ML</span>
+                </div>
+
+                <!-- Prediction Info Box -->
+                <div id="predictionPanel" class="space-y-3.5 text-sm"></div>
+
+                <!-- Confidence Gauge Progress Bar -->
+                <div class="mt-5 space-y-1.5">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-600 dark:text-slate-400">Confidence Score</span>
+                        <span id="confidenceText" class="font-mono font-bold text-slate-900 dark:text-slate-200">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-300 dark:border-slate-800">
+                        <div id="confidenceBar" class="h-full rounded-full transition-all duration-700 bg-slate-400 dark:bg-slate-700" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Quick Add CTA -->
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800/80">
+                <button id="addToPortfolioBtn" class="btn btn-success w-full justify-center">
+                    <i class="fas fa-plus-circle"></i> Add Asset to Portfolio
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-Time Market Overview Grid -->
+    <section class="section-card space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800/80 pb-3">
+            <div class="flex items-center gap-2">
+                <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <i class="fas fa-globe text-cyan-600 dark:text-cyan-400"></i> Market Watchlist Grid
+                </h2>
+                <span class="pulse-dot"></span>
+            </div>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">Auto-refreshes periodically</span>
+        </div>
+
+        <div id="marketOverviewLoader" class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+            <span class="loader loader-sm"></span>
+            <span>Refreshing market overview grid...</span>
+        </div>
+
+        <div id="marketGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
+    </section>
+</div>
+{% endblock %}

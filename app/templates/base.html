@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShareMarket Pro Predictor - AI Market Intelligence{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        brand: "#6366f1",
+                        accent: "#06b6d4"
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white transition-colors duration-200">
+    <div class="min-h-screen flex flex-col">
+        <!-- Sticky Header Navigation -->
+        <header class="app-header sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/80 backdrop-blur-xl transition-colors duration-200">
+            <div class="max-w-7xl mx-auto px-4 py-3 md:px-6 flex flex-row items-center justify-between gap-4">
+                <!-- Brand Logo & Live Pulse -->
+                <a href="{{ url_for('web.index') }}" class="flex items-center gap-3 group shrink-0">
+                    <div class="logo-wrap group-hover:scale-105 transition-transform duration-200">
+                        <i class="fas fa-chart-line text-indigo-600 dark:text-indigo-400"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="brand-title font-heading font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                ShareMarket <span class="gradient-text-indigo">Pro Predictor</span>
+                            </span>
+                            <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                <span class="pulse-dot"></span> LIVE MARKET
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">AI Market Predictions & Portfolio Analytics</p>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <nav class="hidden lg:flex items-center gap-1 nav-surface shrink-0">
+                    <a href="{{ url_for('web.index') }}" class="nav-link {% if request.endpoint == 'web.index' %}nav-link-active{% endif %}">
+                        <i class="fas fa-house"></i> Home
+                    </a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('web.dashboard') }}" class="nav-link {% if request.endpoint == 'web.dashboard' %}nav-link-active{% endif %}">
+                            <i class="fas fa-chart-pie"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('web.portfolio') }}" class="nav-link {% if request.endpoint == 'web.portfolio' %}nav-link-active{% endif %}">
+                            <i class="fas fa-wallet"></i> Portfolio
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('web.about') }}" class="nav-link {% if request.endpoint == 'web.about' %}nav-link-active{% endif %}">
+                        <i class="fas fa-circle-info"></i> About
+                    </a>
+                    <a href="{{ url_for('web.contact') }}" class="nav-link {% if request.endpoint == 'web.contact' %}nav-link-active{% endif %}">
+                        <i class="fas fa-paper-plane"></i> Contact
+                    </a>
+                </nav>
+
+                <!-- User Session & Quick Tools -->
+                <div class="flex items-center gap-2 justify-end shrink-0">
+                    {% if current_user.is_authenticated %}
+                        <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-indigo-950/60 border border-slate-300 dark:border-indigo-500/30 text-slate-700 dark:text-indigo-300 text-xs font-semibold">
+                            <i class="fas fa-user-circle text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                            {{ current_user.username }}
+                        </div>
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost text-xs py-2 px-3">
+                            <i class="fas fa-right-from-bracket"></i> <span class="hidden sm:inline">Logout</span>
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-secondary py-2 px-3 text-xs">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary py-2 px-3.5 text-xs">
+                            <i class="fas fa-user-plus"></i> Register
+                        </a>
+                    {% endif %}
+
+                    <button id="themeBtn" class="btn btn-ghost py-2 px-3" title="Toggle theme">
+                        <i class="fas fa-sun text-amber-500 dark:text-amber-400"></i>
+                    </button>
+
+                    <button id="mobileNavBtn" class="btn btn-ghost lg:hidden py-2 px-3" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile / Tablet Navigation Drawer -->
+            <div id="mobileNav" class="lg:hidden hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg">
+                <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-2">
+                    <a href="{{ url_for('web.index') }}" class="nav-link {% if request.endpoint == 'web.index' %}nav-link-active{% endif %}">
+                        <i class="fas fa-house"></i> Home
+                    </a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('web.dashboard') }}" class="nav-link {% if request.endpoint == 'web.dashboard' %}nav-link-active{% endif %}">
+                            <i class="fas fa-chart-pie"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('web.portfolio') }}" class="nav-link {% if request.endpoint == 'web.portfolio' %}nav-link-active{% endif %}">
+                            <i class="fas fa-wallet"></i> Portfolio
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('web.about') }}" class="nav-link {% if request.endpoint == 'web.about' %}nav-link-active{% endif %}">
+                        <i class="fas fa-circle-info"></i> About
+                    </a>
+                    <a href="{{ url_for('web.contact') }}" class="nav-link {% if request.endpoint == 'web.contact' %}nav-link-active{% endif %}">
+                        <i class="fas fa-paper-plane"></i> Contact
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body Content -->
+        <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 md:px-6 md:py-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash mb-5 {% if category == 'success' %}flash-success{% elif category == 'error' %}flash-error{% else %}bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300{% endif %}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle text-emerald-600 dark:text-emerald-400{% elif category == 'error' %}fa-exclamation-circle text-rose-600 dark:text-rose-400{% else %}fa-info-circle text-indigo-600 dark:text-indigo-400{% endif %} text-lg"></i>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg">
+            <div class="max-w-7xl mx-auto px-4 py-6 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-chart-line text-indigo-600 dark:text-indigo-400"></i>
+                    <p>&copy; 2026 <span class="text-slate-900 dark:text-slate-200 font-semibold">ShareMarket Pro Predictor</span>. Crafted by <span class="text-indigo-600 dark:text-indigo-400 font-semibold">Kirtan Malam</span>.</p>
+                </div>
+                <p class="text-slate-500 dark:text-slate-500 text-center md:text-right">
+                    Engineered with Python, Flask, XGBoost ML, Chart.js, Socket.IO & Tailwind CSS.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Dialog Overlay for Alert / Confirm / Prompt Modals -->
+    <div id="dialogOverlay" class="dialog-overlay hidden">
+        <div class="dialog-card">
+            <div class="flex items-start justify-between gap-3">
+                <h3 id="dialogTitle" class="text-lg font-heading font-bold text-slate-900 dark:text-slate-100"></h3>
+                <button id="dialogCloseBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p id="dialogMessage" class="mt-2 text-sm text-slate-600 dark:text-slate-300"></p>
+            <div id="dialogInputWrapper" class="mt-4 hidden">
+                <input id="dialogInput" type="text" class="input-field w-full" />
+            </div>
+            <div class="mt-5 flex justify-end gap-2.5">
+                <button id="dialogCancelBtn" class="btn btn-secondary hidden">Cancel</button>
+                <button id="dialogOkBtn" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

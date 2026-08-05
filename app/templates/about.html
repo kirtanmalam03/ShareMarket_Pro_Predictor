@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - ShareMarket Pro Predictor{% endblock %}
+
+{% block content %}
+<div class="space-y-8 py-4">
+    <!-- Hero Banner -->
+    <section class="section-card space-y-4 border-indigo-500/20">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20">
+            <i class="fas fa-microchip text-indigo-600 dark:text-indigo-400"></i> ABOUT THE PROJECT
+        </div>
+        <h1 class="text-3xl md:text-4xl font-heading font-extrabold text-slate-900 dark:text-white">About ShareMarket Pro Predictor</h1>
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
+            ShareMarket Pro Predictor is a high-performance financial intelligence web application engineered by <span class="font-semibold text-indigo-600 dark:text-indigo-400">Kirtan Malam</span>. It combines real-time equity market data, technical indicator calculation, and XGBoost machine learning to make stock market trend prediction accessible and actionable.
+        </p>
+    </section>
+
+    <!-- Mission & Focus Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="section-card space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-2">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-slate-100">Mission</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Empower retail traders, learners, and quantitative enthusiasts with clear machine-learning insights and real-time market data.
+            </p>
+        </div>
+
+        <div class="section-card space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-2">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-slate-100">Dual Market Coverage</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Seamless real-time quotes and historical features for US equities (NYSE/NASDAQ) and Indian stock markets (NSE NIFTY50).
+            </p>
+        </div>
+
+        <div class="section-card space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 flex items-center justify-center text-cyan-600 dark:text-cyan-400 mb-2">
+                <i class="fas fa-code"></i>
+            </div>
+            <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-slate-100">Modern Technology Stack</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Python Flask backend, SQLite database, XGBoost classification, Chart.js dual graphs, Socket.IO streaming, and Tailwind CSS.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section-card space-y-4">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <i class="fas fa-cogs text-indigo-600 dark:text-indigo-400"></i> How the ML Engine Works
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs text-slate-700 dark:text-slate-300">
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center font-mono">1</span>
+                <h4 class="font-semibold text-slate-900 dark:text-white">Data Ingestion</h4>
+                <p class="text-slate-600 dark:text-slate-400">Historical daily quotes are pulled from yfinance & free Indian API services with memory caching.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center font-mono">2</span>
+                <h4 class="font-semibold text-slate-900 dark:text-white">Feature Engineering</h4>
+                <p class="text-slate-600 dark:text-slate-400">Calculates RSI, MACD, Moving Averages (SMA/EMA), Volatility, ATR, and momentum indicators.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center font-mono">3</span>
+                <h4 class="font-semibold text-slate-900 dark:text-white">XGBoost Inference</h4>
+                <p class="text-slate-600 dark:text-slate-400">Model predicts directional movement (UP/DOWN) and probability confidence score.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center font-mono">4</span>
+                <h4 class="font-semibold text-slate-900 dark:text-white">Portfolio Sync</h4>
+                <p class="text-slate-600 dark:text-slate-400">Selected stocks can be tracked directly in your user portfolio with live P/L calculations.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

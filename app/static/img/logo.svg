@@ -1,0 +1,33 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stock Predictor Pro logo">
+  <defs>
+    <linearGradient id="g1" x1="22" y1="18" x2="140" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.35" stop-color="#E0F2FE"/>
+      <stop offset="0.7" stop-color="#7DD3FC"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="28" y1="30" x2="132" y2="134" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#4F46E5" stop-opacity="0.18"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="160" height="160" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#1D4ED8" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <rect x="20" y="18" width="120" height="124" rx="26" fill="url(#g1)"/>
+    <rect x="26" y="24" width="108" height="112" rx="22" fill="url(#g2)"/>
+  </g>
+
+  <!-- Minimal chart icon -->
+  <g stroke="#0F172A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44 108 L66 88 L84 98 L110 66" />
+  </g>
+  <g fill="#0F172A">
+    <circle cx="44" cy="108" r="5.5"/>
+    <circle cx="66" cy="88" r="5.5"/>
+    <circle cx="84" cy="98" r="5.5"/>
+    <circle cx="110" cy="66" r="5.5"/>
+  </g>
+</svg>

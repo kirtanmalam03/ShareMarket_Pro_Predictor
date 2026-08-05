@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}ShareMarket Pro Predictor - AI Market Predictions & Stock Analytics{% endblock %}
+
+{% block content %}
+<div class="space-y-12 py-4">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden section-card text-center py-12 md:py-16 border-indigo-500/20">
+        <div class="absolute -top-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-cyan-500/10 dark:bg-cyan-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20">
+                <i class="fas fa-microchip text-indigo-600 dark:text-indigo-400"></i>
+                POWERED BY MACHINE LEARNING & REAL-TIME DATA
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+                Predict Trends. Track Assets. <br>
+                <span class="gradient-text-indigo">Trade With AI Confidence.</span>
+            </h1>
+
+            <p class="text-base md:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                ShareMarket Pro Predictor combines real-time equity feeds, technical indicators, and XGBoost machine learning to help you analyze US & Indian stock markets instantly.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('web.dashboard') }}" class="btn btn-primary px-7 py-3.5 text-base shadow-lg shadow-indigo-500/25">
+                        <i class="fas fa-chart-line"></i> Open Intelligence Workstation
+                    </a>
+                    <a href="{{ url_for('web.portfolio') }}" class="btn btn-secondary px-7 py-3.5 text-base">
+                        <i class="fas fa-wallet"></i> View Portfolio
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary px-7 py-3.5 text-base shadow-lg shadow-indigo-500/25">
+                        <i class="fas fa-rocket"></i> Get Started Free
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary px-7 py-3.5 text-base">
+                        <i class="fas fa-sign-in-alt"></i> Login Account
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Supported Ticker Badges -->
+            <div class="pt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                <span class="font-semibold mr-1">Popular Tickers:</span>
+                <span class="symbol-chip"><i class="fab fa-apple"></i> AAPL</span>
+                <span class="symbol-chip"><i class="fas fa-laptop-code"></i> MSFT</span>
+                <span class="symbol-chip"><i class="fas fa-search font-bold"></i> GOOGL</span>
+                <span class="symbol-chip"><i class="fas fa-box"></i> AMZN</span>
+                <span class="symbol-chip"><i class="fas fa-bolt text-rose-500"></i> TSLA</span>
+                <span class="symbol-chip"><i class="fas fa-microchip text-emerald-500"></i> NVDA</span>
+                <span class="symbol-chip"><i class="fas fa-building text-indigo-500"></i> RELIANCE.NS</span>
+                <span class="symbol-chip"><i class="fas fa-code text-cyan-500"></i> TCS.NS</span>
+                <span class="symbol-chip"><i class="fas fa-chart-line text-amber-500"></i> NIFTY50</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="section-card section-card-hover space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xl">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-slate-100">XGBoost ML Models</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Evaluates RSI, MACD, Moving Averages, Volatility, and ATR indicators to generate directional probabilities and confidence scores.
+            </p>
+        </div>
+
+        <div class="section-card section-card-hover space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-slate-100">Live Global & Indian Feeds</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Connects live streaming data for US equities, NIFTY 50 Indian stocks, and indices with instant USD / INR currency switching.
+            </p>
+        </div>
+
+        <div class="section-card section-card-hover space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 text-xl">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-slate-100">Portfolio Tracker</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Monitor your current share holdings, evaluate live gain/loss margins, track total portfolio net worth, and manage investments.
+            </p>
+        </div>
+    </section>
+
+    <!-- Quick Overview Section -->
+    <section class="section-card space-y-4">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <i class="fas fa-shield-halved text-indigo-600 dark:text-indigo-400"></i> Why Choose ShareMarket Pro Predictor?
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700 dark:text-slate-300">
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-lg mt-0.5"></i>
+                <div>
+                    <strong class="text-slate-900 dark:text-white block font-semibold">Dual Market Support</strong>
+                    Seamless support for global stocks (NYSE/NASDAQ) and Indian National Stock Exchange (NSE) / BSE symbols.
+                </div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-lg mt-0.5"></i>
+                <div>
+                    <strong class="text-slate-900 dark:text-white block font-semibold">Real-Time Currency Conversion</strong>
+                    Switch instantly between USD ($) and Indian Rupees (₹) with real-time exchange rates.
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
