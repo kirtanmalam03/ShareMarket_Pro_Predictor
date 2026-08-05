@@ -97,71 +97,31 @@ This project demonstrates practical implementation of Machine Learning in financ
 
 ---
 
-# 🖼️ Screenshots
+## 📸 Application Screenshots
 
-## 🏠 Home Page
+### 🏠 Landing Page
+![Landing Page](assets/banner.png)
 
-![Home](assets/home-page.png)
+### 🏡 Home Page
+![Home Page](assets/home-page.png)
 
----
-
-## 🔐 Login Page
-
-![Login](assets/login-page.png)
-
----
-
-## 📝 Register Page
-
-![Register](assets/register-page.png)
-
----
-
-## 📊 Dashboard
-
+### 📊 Dashboard
 ![Dashboard](assets/dashboard.png)
 
----
+### 💼 Portfolio Management
+![Portfolio](assets/portfolio.png)
 
-## 🤖 Prediction
+### 🔐 Login Page
+![Login](assets/login.png)
 
-![Prediction](assets/prediction-page.png)
+### 📝 Register Page
+![Register](assets/register.png)
 
----
+### 📩 Contact Page
+![Contact](assets/contact.png)
 
-## 💼 Portfolio
-
-![Portfolio](assets/portfolio-page.png)
-
----
-
-## 📈 Live Market
-
-![Live Market](assets/live-market.png)
-
----
-
-## 📉 Chart Analysis
-
-![Chart](assets/chart-analysis.png)
-
----
-
-## 📊 Technical Indicators
-
-![Technical](assets/technical-indicators.png)
-
----
-
-# 🏗️ System Architecture
-
-![Architecture](assets/architecture.png)
-
----
-
-# 🤖 Machine Learning Workflow
-
-![Workflow](assets/model-workflow.png)
+### ℹ️ About Page
+![About](assets/about.png)
 
 ---
 
