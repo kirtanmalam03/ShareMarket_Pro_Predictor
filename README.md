@@ -302,6 +302,10 @@ GitHub:
 
 https://github.com/kirtanmalam03
 
+Linkedin:
+
+https://www.linkedin.com/in/kirtan-malam-709b87281/
+
 ---
 
 # ⭐ Support
